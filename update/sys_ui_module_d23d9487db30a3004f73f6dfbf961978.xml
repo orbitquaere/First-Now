@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_ui_module">
+    <sys_ui_module action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <application display_value="tblChat">123d9487db30a3004f73f6dfbf961976</application>
+        <filter/>
+        <name>tblChats</name>
+        <order/>
+        <path/>
+        <path_relative_to_root>false</path_relative_to_root>
+        <roles>x_277534_angularap.tblchat_user</roles>
+        <sys_class_name>sys_ui_module</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-10-01 11:12:42</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>d23d9487db30a3004f73f6dfbf961978</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>tblChats</sys_name>
+        <sys_package display_value="AngularApp" source="x_277534_angularap">d0061442db3023004f73f6dfbf9619b8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="AngularApp">d0061442db3023004f73f6dfbf9619b8</sys_scope>
+        <sys_update_name>sys_ui_module_d23d9487db30a3004f73f6dfbf961978</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-01 11:12:42</sys_updated_on>
+        <table>x_277534_angularap_tblchat</table>
+        <uncancelable>false</uncancelable>
+        <view_name/>
+    </sys_ui_module>
+</record_update>

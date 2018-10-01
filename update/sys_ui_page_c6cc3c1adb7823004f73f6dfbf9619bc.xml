@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description>my First Chat Application On Service-Now Using Angular.js</description>
+        <direct>false</direct>
+        <endpoint>x_277534_angularap_chat_room.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"></link>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+	<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=u6om04zqftrqmta1v82qth8u2u56rwg989uoq6hh5ntqoi77"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" ></link>
+	
+	<script>
+		//-----------------------tinymce------------------------//
+		tinymce.init({
+  selector: 'textarea.thisarea',
+  height: 100,
+  menubar: false,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor textcolor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code help wordcount'
+  ],
+  toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tinymce.com/css/codepen.min.css']
+});
+		
+		function ScrollBottom(id1, id2){
+		debugger;
+		     var $this = $(id1),
+             $toElement      = $(id1),
+             $focusElement   = $(id2),
+             $offset         = 200,
+             $speed          = 700;
+
+			  $('.chat-history').animate({
+				scrollTop: $($toElement).offset().top + $offset
+			  }, $speed);
+  
+			  if ($focusElement) $($focusElement).focus();
+		}
+		
+		//---------------------Angular Function--------------------------//
+    var app = angular.module("myApp", ['ngSanitize']);
+//var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+  //$scope.myTxt = "You have not yet clicked submit";
+ $scope.tinyTxt = "";
+		$scope.msgCount=0;
+  $scope.myFunc = function () {
+		debugger;
+      //$scope.myTxt = "You clicked submit!";
+      var content = tinymce.get("texteditor").getContent();
+		$scope.msgCount++;
+		var li_me = '<li class="clearfix" id="li_">'+
+      '<div class="message-data align-right">'+
+      ' <span class="message-data-time">10:10 AM, Today</span> '+
+      '<span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i></div>'+
+     '<div class="message other-message float-right" id="msg'+ $scope.msgCount + '">'+ $scope.msgCount +'. '+ content +'</div>'+
+     '</li>';
+var li_you = '<li id="li_'+$scope.msgCount+'">'+
+        '<div class="message-data">'+
+        '<span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>'+
+        '<span class="message-data-time">10:12 AM, Today</span>'+
+        '</div>'+
+        '<div class="message my-message" id="msg'+ $scope.msgCount + '">'+
+        'Are we meeting today? Project has been already finished and I have results to show you.'+
+        '</div>'+
+        '</li>';
+		      $scope.tinyTxt += li_me + li_you;
+              
+		scrollToBottom();
+		//ScrollBottom("#li_"+$scope.msgCount, "#msg"+$scope.msgCount);
+  }
+});
+		
+		 function scrollToBottom() {
+		debugger;
+		var $chatHistory = $('.chat-history');
+		//var $chatHistory2 = $('#chathistory');
+		var height = $chatHistory[0].scrollHeight;
+          $chatHistory.scrollTop($chatHistory[0].scrollHeight);
+		//$chatHistory2.scrollTop($chatHistory2[1].scrollHeight);
+    }
+    function getCurrentTime() {
+      return new Date().toLocaleTimeString().
+              replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3");
+    }
+		
+	</script>
+	
+	<script id="message-template" type="text/x-handlebars-template">
+  <li class="clearfix">
+    <div class="message-data align-right">
+      <span class="message-data-time" >{{time}}, Today</span>
+      <span class="message-data-name" >Olia</span> <i class="fa fa-circle me"></i>
+    </div>
+    <div class="message other-message float-right">
+      {{messageOutput}}
+    </div>
+  </li>
+</script>
+
+<script id="message-response-template" type="text/x-handlebars-template">
+  <li>
+    <div class="message-data">
+      <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+      <span class="message-data-time">{{time}}, Today</span>
+    </div>
+    <div class="message my-message">
+      {{response}}
+    </div>
+  </li>
+</script>
+	<div ng-app="myApp" ng-controller="myCtrl" style="width: 100%;float:left;">
+		<div id="chathistory" style="width: 100%;padding: 1%;box-shadow: 0px 0px 5px 0px #ccc;overflow:auto;position: fixed;top: 0px;left: 0px;height: 68%;">
+			<div ng-bind-html="msgCount"></div>
+		<div id="data-container">
+			<div class="chat">
+      <div class="chat-header clearfix">
+        <img style="width: 3%;border-radius: 50%;" src="https://lh3.googleusercontent.com/-vwv9HfYcBuI/W6HifMntZwI/AAAAAAAAACw/7B7g9Wgl3lIBPs-0Hy3n9joQhxK6HEBYwCEwYBhgL/w139-h140-p/1375168_582458985125084_1209330123_n.jpg" alt="avatar" />
+        
+        <div class="chat-about">
+          <div class="chat-with">Chat with Vincent Porter</div>
+          <div class="chat-num-messages">already 1 902 messages</div>
+        </div>
+        <i class="fa fa-star"></i>
+      </div> <!-- end chat-header -->
+      
+      <div class="chat-history">
+			<ul  ng-bind-html="tinyTxt"></ul>
+	  </div>
+</div>
+       
+
+	    </div>
+	</div>
+	<div class="row" style="width:100%;position: fixed;bottom: 0;">
+		<form ng-submit="myFunc()">
+			<div style="width:95%; float:left;">
+				 <textarea class="tinymce thisarea" id="texteditor"></textarea>
+			</div>
+			<div style="width:5%; float:left;">
+				<input type="submit" value="Send" class="btn btn-success pull-right" style="position: absolute;height: 100%;width: auto;border-radius: 0;"></input>
+			</div>
+           
+			
+       </form>
+	</div>
+	
+	</div>
+	<style>
+		ul{
+		 list-style: none;
+		}
+		ul.msg{
+		position: absolute;
+    width: 99%;
+    bottom: 30px;
+		    list-style: none;
+		margin-bottom: 5%;
+		}
+		.to-msg{
+		    position: absolute;
+    right: 10px;
+    background-color: #e6e8ea;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+		padding-left: 10px;
+    padding-right: 10px;
+		width: auto;
+		max-width:90%;
+		padding-top: 5px;
+    padding-bottom: 5px;
+		}
+		.from-msg{
+    background-color: #e6e8ea;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+		margin-bottom: 10px;
+    margin-top: 10px;
+    width: auto;
+		max-width:90%;
+		padding-left: 10px;
+    padding-right: 10px;
+		padding-top: 5px;
+    padding-bottom: 5px;
+		}
+		p,h1,h2,h3{
+		margin:0;
+		}
+		
+		@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #C5DDEB;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  padding: 40px 0;
+  color: white;
+}
+
+.container {
+  margin: 0 auto;
+  width: 750px;
+  background: #444753;
+  border-radius: 5px;
+}
+
+.people-list {
+  width: 260px;
+  float: left;
+}
+.people-list .search {
+  padding: 20px;
+}
+.people-list input {
+  border-radius: 3px;
+  border: none;
+  padding: 14px;
+  color: white;
+  background: #6A6C75;
+  width: 90%;
+  font-size: 14px;
+}
+.people-list .fa-search {
+  position: relative;
+  left: -25px;
+}
+.people-list ul {
+  padding: 20px;
+  height: 770px;
+}
+.people-list ul li {
+  padding-bottom: 20px;
+}
+.people-list img {
+  float: left;
+}
+.people-list .about {
+  float: left;
+  margin-top: 8px;
+}
+.people-list .about {
+  padding-left: 8px;
+}
+.people-list .status {
+  color: #92959E;
+}
+
+.chat {
+  position: absolute;
+  width: 100%;
+  float: left;
+  background: #F2F5F8;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  color: #434651;
+}
+.chat .chat-header {
+  padding: 20px;
+  border-bottom: 2px solid white;
+}
+.chat .chat-header img {
+  float: left;
+}
+.chat .chat-header .chat-about {
+  float: left;
+  padding-left: 10px;
+  margin-top: 6px;
+}
+.chat .chat-header .chat-with {
+  font-weight: bold;
+  font-size: 16px;
+}
+.chat .chat-header .chat-num-messages {
+  color: #92959E;
+}
+.chat .chat-header .fa-star {
+  float: right;
+  color: #D8DADF;
+  font-size: 20px;
+  margin-top: 12px;
+}
+.chat .chat-history {
+  padding: 30px 30px 20px;
+  border-bottom: 2px solid white;
+  overflow-y: scroll;
+  height: 200px;
+}
+.chat .chat-history .message-data {
+  margin-bottom: 15px;
+}
+.chat .chat-history .message-data-time {
+  color: #a8aab1;
+  padding-left: 6px;
+}
+.chat .chat-history .message {
+  color: white;
+  padding: 18px 20px;
+  line-height: 26px;
+  font-size: 16px;
+  border-radius: 7px;
+  margin-bottom: 30px;
+  width: 90%;
+  position: relative;
+}
+.chat .chat-history .message:after {
+  bottom: 100%;
+  left: 7%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: #86BB71;
+  border-width: 10px;
+  margin-left: -10px;
+}
+.chat .chat-history .my-message {
+  background: #86BB71;
+}
+.chat .chat-history .other-message {
+  background: #94C2ED;
+}
+.chat .chat-history .other-message:after {
+  border-bottom-color: #94C2ED;
+  left: 93%;
+}
+.chat .chat-message {
+  padding: 30px;
+}
+.chat .chat-message textarea {
+  width: 100%;
+  border: none;
+  padding: 10px 20px;
+  font: 14px/22px "Lato", Arial, sans-serif;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  resize: none;
+}
+.chat .chat-message .fa-file-o, .chat .chat-message .fa-file-image-o {
+  font-size: 16px;
+  color: gray;
+  cursor: pointer;
+}
+.chat .chat-message button {
+  float: right;
+  color: #94C2ED;
+  font-size: 16px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  background: #F2F5F8;
+}
+.chat .chat-message button:hover {
+  color: #75b1e8;
+}
+
+.online, .offline, .me {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.online {
+  color: #86BB71;
+}
+
+.offline {
+  color: #E38968;
+}
+
+.me {
+  color: #94C2ED;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.float-right {
+  float: right;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+	</style>
+</j:jelly>]]></html>
+        <name>chat_room</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-09-29 05:36:51</sys_created_on>
+        <sys_id>c6cc3c1adb7823004f73f6dfbf9619bc</sys_id>
+        <sys_mod_count>66</sys_mod_count>
+        <sys_name>chat_room</sys_name>
+        <sys_package display_value="AngularApp" source="x_277534_angularap">d0061442db3023004f73f6dfbf9619b8</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="AngularApp">d0061442db3023004f73f6dfbf9619b8</sys_scope>
+        <sys_update_name>sys_ui_page_c6cc3c1adb7823004f73f6dfbf9619bc</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-10-01 11:31:28</sys_updated_on>
+    </sys_ui_page>
+</record_update>
